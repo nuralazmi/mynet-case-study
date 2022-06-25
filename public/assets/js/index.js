@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //Doğum tarihi input alanına mask uygulanacak.
     document.querySelector('#date').addEventListener('input', function (e) {
         let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})(\d{0,4})/);
-        e.target.value = !x[2] ? x[1] : '' + x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '');
+        e.target.value = !x[2] ? x[1] : '' + x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : ''); 
     });
 
     //Kaydet butonuna tıklanıldığında form kontrolü yapılacak ve istek atılacak.
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 person_id: 10,
                 name: 'Azmi 2',
                 date: '18/05/1995',
-                age: 1,
+                age: convertToString('age', 1),
                 address: 'Maltepe/İstanbul XYZ Mahallesi'
             }
 
@@ -40,40 +40,46 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
     });
+    /*
+    Güncelle butonuna tıklanıldığında form otomatik doldurulacak.
+    Yeni satır ekleneceği için sonra eklenen butonlar olacaktır. Onları da yakalayabilmek için
+    elementin kendisi değil de document dinleniyor.
+     */
+    document.addEventListener('click', function (e) {
+        if (e.target.tagName === 'BUTTON' && e.target.classList.contains('btn-update')) {
+            let btn = e.target;
+            let trElement = btn.parentElement.closest('tr');
+            let person_id = trElement.getAttribute('data-person');
+            /*
+            Güncelle butonuna tıklanıldığında ilgili kişinin verileri için backend e istek atılacak.
+            */
+            console.log(person_id, 'detayları için istek atılacak');
 
-
-    //Güncelle butonuna tıklanıldığında form otomatik doldurulacak.
-    document.querySelectorAll('.btn-update').forEach(function (btn) {
-        /*
-        Güncelle butonuna tıklanıldığında ilgili kişinin verileri için backend e istek atılacak.
-        Bilgiler veri tabanından değil cache den gelecek veri tabanını yormamak için.
-        Bu sebeple verilen doğrudan html deki tablodan da alınabilir ancak cache de veri tabanını yorma
-        probleminin önüne geçeceği için veriler backend den alınacak.
-         */
-        btn.addEventListener('click', function (e) {
-            let person_id = btn.getAttribute('data-person'); 
-            let element = document.querySelector('tr[data-person="' + person_id + '"]');
+            //işlem başarılı ise ilgili person için veriler
             let person_detail = {
                 person_id,
-                name: element.querySelector('.name').innerText,
-                date: element.querySelector('.date').innerText,
-                age: element.querySelector('.age').innerText,
-                address: element.querySelector('.address').innerText
-            };
-            setForm(person_detail);
-        })
-    });
+                name: 'Azmi 2',
+                date: '18/05/1995',
+                age: 1,
+                address: 'Maltepe/İstanbul XYZ Mahallesi'
+            }
 
+            setForm(person_detail);
+        }
+    });
 
     //Sil butonuna tıklanıldığında backend e istek atılacak. İşlem başarılı ise tablodan ilgili satır silinecek.
     document.querySelectorAll('.btn-delete').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             let person_id = btn.getAttribute('data-person');
-            let row_number = btn.getAttribute('data-number');
+            console.log(person_id, 'detayları için istek atılacak');
 
-            console.log('silme isteği atılacak');
-            document.querySelector('tr[data-number="' + row_number + '"]').remove();
-
+            //işlem başarılı ise tablodan ilgili satır silinecek
+            btn.parentElement.closest('tr').remove();
+            //Eğer güncelleme sayfası açıksa kapatılacak.
+            if (document.querySelector('#person_id').value !== '') {
+                removeForm();
+            }
         })
     });
 
@@ -88,28 +94,32 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
 
     function changeTrTag(person_detail) {
-        let element = document.querySelector('tr[data-person="' + person_detail.person_id + '"]');
-        element.querySelector('.name').innerText = person_detail.name;
-        element.querySelector('.date').innerText = person_detail.date;
-        element.querySelector('.age').innerText = person_detail.age;
-        element.querySelector('.address').innerText = person_detail.address;
+        if (typeof person_detail === "object") {
+            let trElement = document.querySelector('tr[data-person="' + person_detail.person_id + '"]');
+            if (trElement) {
+                Object.entries(person_detail).forEach(([key, value]) => {
+                    if (trElement.querySelector('.' + key))
+                        trElement.querySelector('.' + key).innerText = value;
+                });
+            }
+        }
     }
 
-
     function addTrTag(person_detail) {
-        let element = document.querySelector('tr[data-person="' + person_detail.person_id + '"]');
-        let clone = element.cloneNode(true);
-        let countTr = document.querySelectorAll('.list .content table tbody tr').length;
-        let age = person_detail.age;
-        age = age === 1 || age === 0 ? (age === 1 ? 'Erkek' : 'Kadın') : age;
-
-        clone.setAttribute('data-number', countTr + 1);
-        clone.setAttribute('data-person', person_detail.person_id);
-        clone.querySelector('.name').innerText = person_detail.name;
-        clone.querySelector('.date').innerText = person_detail.date;
-        clone.querySelector('.age').innerText = age;
-        clone.querySelector('.address').innerText = person_detail.address;
-        document.querySelector('.list .content table tbody').insertAdjacentHTML('beforeend', clone.outerHTML);
+        if (typeof person_detail === "object") {
+            if (document.querySelector('.clone-element')) {
+                let clone = document.querySelector('.clone-element').cloneNode(true);
+                clone.classList.remove('hidden');
+                clone.classList.remove('clone-element');
+                let countTr = document.querySelectorAll('.list .content table tbody tr').length;
+                clone.setAttribute('data-number', countTr + 1);
+                clone.setAttribute('data-person', person_detail.person_id);
+                Object.entries(person_detail).forEach(([key, value]) => {
+                    if (clone.querySelector('.' + key)) clone.querySelector('.' + key).innerText = value;
+                });
+                document.querySelector('.list .content table tbody').insertAdjacentHTML('beforeend', clone.outerHTML);
+            }
+        }
     }
 
     function setForm(person_detail) {
@@ -118,14 +128,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         document.querySelector('.create .header.update').classList.remove('hidden');
         document.querySelector('.create .new-add').classList.remove('hidden');
         document.querySelector('.create .new-add').classList.add('visible');
-
-        let age = person_detail.age.toString().toLowerCase();
-        age = age === 'kadın' || age === 'erkek' ? (age === 'erkek' ? 0 : 1) : age;
-        document.querySelector('#person_id').value = person_detail.person_id;
-        document.querySelector('#name').value = person_detail.name;
-        document.querySelector('#date').value = person_detail.date;
-        document.querySelector('#age').value = age;
-        document.querySelector('#adress').value = person_detail.address;
+        if (typeof person_detail === "object") {
+            let element = false;
+            Object.entries(person_detail).forEach(([key, value]) => {
+                element = document.querySelector('#' + key);
+                if (element) element.value = value;
+            });
+        }
     }
 
     function removeForm() {
@@ -136,10 +145,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
         document.querySelector('.create .new-add').classList.remove('visible');
         document.querySelector('.create .new-add').classList.add('hidden');
 
-        document.querySelector('#person_id').value = '';
-        document.querySelector('#name').value = '';
-        document.querySelector('#date').value = '';
-        document.querySelector('#age').value = 0;
-        document.querySelector('#adress').value = '';
+        let inputs = document.querySelector('form.form').elements;
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].nodeName === "INPUT" || inputs[i].nodeName === "TEXTAREA") inputs[i].value = '';
+            else if (inputs[i].nodeName === "SELECT") inputs[i].value = 0;
+        }
+    }
+
+    function convertToString(key, value) {
+        if (key === 'age' && !isNaN(value)) return value === 0 ? 'Erkek' : 'Kadın';
+        return value;
     }
 });

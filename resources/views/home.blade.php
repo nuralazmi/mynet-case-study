@@ -27,17 +27,30 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr data-number="11" data-person="10">
-                        <th scope="row">0</th>
+                    <tr class="clone-element hidden" data-number="0" data-person="0">
+                        <th>0</th>
                         <td class="name">Azmi</td>
                         <td class="date">18/05/1995</td>
                         <td class="age">Erkek</td>
                         <td class="address">Maltepe/Istanbul</td>
                         <td>
-                            <button class="btn btn-update" data-number="11" data-person="10">Güncelle</button>
+                            <button class="btn btn-update">Güncelle</button>
                         </td>
                         <td>
-                            <button class="btn btn-delete" data-number="11">Sil</button>
+                            <button class="btn btn-delete">Sil</button>
+                        </td>
+                    </tr>
+                    <tr data-number="11" data-person="10">
+                        <th>0</th>
+                        <td class="name">Azmi</td>
+                        <td class="date">18/05/1995</td>
+                        <td class="age">Erkek</td>
+                        <td class="address">Maltepe/Istanbul</td>
+                        <td>
+                            <button class="btn btn-update">Güncelle</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-delete">Sil</button>
                         </td>
                     </tr>
                     </tbody>
@@ -69,8 +82,8 @@
                             </select>
                         </div>
                         <div class="input-row">
-                            <label for="adress">Adres</label>
-                            <textarea minlength="15" name="adress" required id="adress" class="input"
+                            <label for="address">Adres</label>
+                            <textarea minlength="15" name="adress" required id="address" class="input"
                                       rows="3"></textarea>
                         </div>
                         <div class="input-row">
