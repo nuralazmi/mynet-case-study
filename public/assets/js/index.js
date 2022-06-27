@@ -254,6 +254,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
             if (inputs[i].nodeName === "INPUT" || inputs[i].nodeName === "TEXTAREA") inputs[i].value = '';
             else if (inputs[i].nodeName === "SELECT") inputs[i].value = 0;
         }
+
+        document.querySelector('.form').classList.remove('validate');
+
     }
 
     function dateFormString(string) {

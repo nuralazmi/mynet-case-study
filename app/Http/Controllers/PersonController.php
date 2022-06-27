@@ -47,7 +47,7 @@ class PersonController extends Controller
             'name' => 'required',
             'birthday' => 'required|date_format:d/m/Y',
             'gender' => 'required|integer|min:0|max:1',
-            'address' => 'required|min:15',
+            'address' => 'required|min:5',
             'city_id' => 'required|integer|min:1',
             'country_id' => 'required|integer|min:1',
             'post_code' => 'required',
