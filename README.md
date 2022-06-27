@@ -1,64 +1,34 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Başlangıç
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Projeyi canlı sunucuda sunamadığım için eğer sizler yerel ortamda çalıştıracaksanız web sunucu yazılımı kurmalısınız. Örnek: Xampp
 
-## About Laravel
+- Projeyi indirdiğinizde .env dosyasının adı .env.example olarak değişmiş olabilir. Eğer böyleyse dosya adını .env olarak güncellemelisiniz.
+- Node bağımlılıklarını kurmak için terminalde proje dizininde "npm install" komutunu çalıştırmalısınız.
+- Php bağımlılıklarını kurmak için terminalde proje dizininde "composer install" komutunu çalıştırmalısınız.
+- Mysql Veri tabanı oluşturmalısınız. Host:127.0.0.1, Port:3306, Database:mynet_case_study, User:root. Bu bilgileri değiştirmek veya kontrol etmek için .env dosyasını inceleyebilirsiniz.
+- Oluşturulan veri tabanına projede ilgili tabloların kurulması için "php artisan migrate" komutunu çalıştırmalısınız.
+- Oluşturulan veri tabanı tablolarına fake veri girmek için "php artisan db:seed" komutunu çalıştırmalısınız.
+- "php artisan serve" komutunu çalıştırarak projeyi görüntüleyebilirsiniz.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Algoritma ve Akış
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Client
+Tek sayfadan oluşmaktadır(home.blade.php). Sayfa içerisinde kişileri listelendiği tablo ve yeni kayıt veya güncellemenin yapılacağını form alanı mevcuttur.
+Güncelleme butonu ile mevcut form otomatik doldurulmaktadır ilgili kişinin bilgileriyle. Güncelleme işlemi başarılı olmuş ise tablodaki ilgili satırın 
+sütunları değiştirilmektedir. 
+Yeni kayıt yapıldığında tablo yeniden oluşturulmaz veya veri tabanında güncel liste alınmaz. Yeni eklenen kişi, yeni bir "tr" etiketiyle tabloya ilave edilir.
+Tablodaki her sayfada 5 satır bulunmaktadır. Eğer yeni eklenen kişi için sayfada yer yoksa tablonun sayfalaması bir attırılır ve yeni kişi diğer sayfada gösterilir.
+Kişinin silinme işleminde de veri tabanından güncel veriler alınmadan ilgili "tr" etiketi silinir. Tablo satırları, numaraları ve tablonun sayfalaması
+javascript yardımıyla düzenlenir. Veri silindikçe sayfalamanın da düşmesi gerekir.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Server
+Rotalar routes/web.php altındadır. Resource controller yardımıyla rest istekler karşılanmaktadır.
+Kişiler, adres tablosuyla, adres tablosu şehir tablosuyla, şehir tablosu ise ülke tablosuyla ilişkilidir. Migration tanımlamasında bu ilişkiler de tanımlanmıştır.
+Factory kütüphanesi kullanılarak da modeller birbirine bağlanmıştır. Bu sayede kişiyi/kişileri listelerken relationship kullanarak kişiye ait tüm bu detayları alabilmekteyiz, tek bir model kullanarak.
+Veri aldığımız tüm tablolar da cache yapısı kullanılmaktadır. Kurulum gerektirdiği için ve projeyi çalıştırmada engel olabileceği için redis veya memcached kullanmadım. File kullandım.
+Ancak bu yapı için redis veya memcached daha sağlıklı olacaktır.
+Kişilerin bilgileri güncellendikten sonra veya yeni kişi eklendikten sonra cache silinmektedir.
+Cache kullanımı: eğer ilgili key için cache varsa cacheden getir yoksa veri tabanından getir ve getirdikten sonra ilgili key için cache oluştur.
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Sormak istediğiniz veya yaşanılan bir sorunda e-posta adresimden bana ulaşabilirsiniz
+nuralazmi@gmail.com
