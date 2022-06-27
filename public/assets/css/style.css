@@ -45,8 +45,6 @@ body {
     border-radius: 5px;
     padding: 10px 15px;
     font-size: 15px;
-    margin-bottom: 15px;
-    position: relative;
 }
 
 .box .header {
@@ -55,7 +53,6 @@ body {
 
 .box .content {
     margin-top: 10px;
-
 }
 
 .box .content table {
@@ -68,79 +65,6 @@ body {
 .box .content table th {
     color: gray;
     font-size: 14px;
-}
-
-.box .content table td.address_detail {
-    width: 350px;
-    position: relative;
-    padding-top: 7px;
-}
-
-.pagination {
-    position: absolute;
-    top: unset;
-    bottom: -28px;
-    left: 0;
-    display: flex;
-    right: unset;
-}
-
-.pagination .item {
-    background: #dcdcdc;
-    padding: 4px 8px;
-    margin: 1px;
-    border-radius: 5px;
-    font-size: 13px;
-    color: black;
-    cursor: pointer;
-}
-
-.pagination .item.active {
-    background: #b2b2b2;
-    color: white;
-}
-
-table td.address_detail .tooltip {
-    position: absolute;
-    right: 0;
-    top: -6px;
-}
-
-table td.address_detail .tooltip .text {
-    cursor: pointer;
-    text-decoration: underline;
-    color: #00c851;
-    font-size: 10px;
-}
-
-table td.address_detail .tooltip .tooltip-box {
-    display: none;
-    transition: 300ms all;
-    position: absolute;
-    left: unset;
-    top: 100%;
-    background: lightgrey;
-    padding: 5px 10px;
-    margin-left: 2px;
-    border-radius: 7px;
-    width: 150px;
-    right: 0;
-    text-align: left;
-    z-index: 2;
-    font-size: 12px;
-}
-
-.tooltip-box .item {
-    margin-bottom: 5px;
-    margin-top: 5px;
-}
-
-table td.address_detail .tooltip:hover .tooltip-box {
-    display: block;
-}
-
-td.button {
-    padding-left: 10px;
 }
 
 .btn {
@@ -167,7 +91,6 @@ td.button {
 
 .list {
     width: 60%;
-    min-height: 260px;
 }
 
 .create {
@@ -179,17 +102,12 @@ td.button {
 .create .form-container {
     width: 100%;
     height: auto;
-    display: flex;
-    flex-grow: revert;
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
 .create .form-container .input-row {
     display: flex;
     flex-direction: column;
-    /*margin-bottom: 15px;*/
-    flex: 33%;
+    margin-bottom: 15px;
 }
 
 .form-container .input-row label {
@@ -217,7 +135,6 @@ textarea.input {
 
 select {
     appearance: none;
-    padding: 0 0 0 10px !important;
 }
 
 .btn-save {
